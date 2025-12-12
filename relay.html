@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>アップロード中継ページ</title>
+<style>
+  body {
+    font-family: sans-serif;
+    text-align: center;
+    padding-top: 50px;
+  }
+</style>
+
+<script>
+/* --- 設定エリア（あなたの GAS URL を入れる） ------------------- */
+const UPLOAD_URL = "https://script.google.com/macros/s/AKfycby8oC0wxzLwSMwH0VuRlyEM5bf0F8WgywBKW48tGYrvGzc-VIDsjKAA4OJi6BJcj2xx/exec";
+/* --------------------------------------------------------------- */
+
+window.onload = () => {
+  // ① GAS アップロードアプリを開く
+  const win = window.open(UPLOAD_URL, "_blank");
+
+  // ② 1 秒ごとにアップローダーの状態（閉じられたか）を確認
+  const timer = setInterval(() => {
+    if (win && win.closed) {
+      clearInterval(timer);
+      // ③ relay.html 自身を閉じる
+      window.close();
+    }
+  }, 1000);
+
+  // ④ 万が一閉じられないブラウザ対策（ボタン表示）
+  setTimeout(() => {
+    const msg = document.getElementById("fallback");
+    msg.style.display = "block";
+  }, 4000);
+};
+</script>
+</head>
+
+<body>
+<h2>アップロードページを開いています…</h2>
+<p>アップロード完了後、このタブは自動的に閉じられます。</p>
+
+<p id="fallback" style="display:none; margin-top:40px;">
+  タブが閉じない場合はこちらをクリックしてください：<br><br>
+  <button onclick="window.close()" style="padding:10px 20px;">タブを閉じる</button>
+</p>
+
+</body>
+</html>
